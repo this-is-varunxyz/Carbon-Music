@@ -1,0 +1,75 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ==========================================
+# Custom Additions for Free Tunes App
+# ==========================================
+
+# 1. Firebase Configuration Files
+# While Firebase claims these keys are "public", bots scrape GitHub to steal 
+# them and exhaust your free Firebase quota. It is safer to ignore them.
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+firebase.json
+
+# 2. Keystores and App Signing (CRITICAL)
+# Never push your debug or release keystores to GitHub.
+*.keystore
+*.jks
+android/key.properties
+
+# 3. Environment Variables
+# For when you inevitably add API keys for the Python Recommendation System
+.env
+.env.*
+
+# 4. IDE and OS specific files
+.vscode/
+!.vscode/settings.json # (Optional: keep this if you want to share workspace settings)
+.idea/
+*.iml
+.DS_Store
