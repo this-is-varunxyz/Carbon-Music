@@ -40,6 +40,7 @@ dependencies:
   google_sign_in: ^7.2.0
   get_it: ^9.2.1
   dartz: ^0.10.1
+  liquid_glass_widgets: ^0.12.6
 
 dev_dependencies:
   flutter_test:
