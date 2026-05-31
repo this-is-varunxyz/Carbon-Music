@@ -3,16 +3,20 @@ import 'package:carbon_music/features/auth/domain/auth_repository.dart';
 import 'package:carbon_music/features/auth/domain/user_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   bool _isGoogleSignInInitialized = false;
+  
 
   Future<void> _ensureGoogleSignInInitialized() async {
+    await dotenv.load(fileName: '.env');
     if (!_isGoogleSignInInitialized) {
-      await _googleSignIn.initialize();
+      await _googleSignIn.initialize(serverClientId: dotenv.env['SERVER_CLIENT_ID']);
       _isGoogleSignInInitialized = true;
     }
   }
@@ -20,6 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, UserEntity>> signInWithGoogle() async {
     try {
+      
       await _ensureGoogleSignInInitialized();
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;

@@ -1,5 +1,5 @@
+import 'package:carbon_music/features/music/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:carbon_music/features/auth/domain/auth_repository.dart';
 import 'package:carbon_music/injection_container.dart';
 
@@ -15,33 +15,44 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     setState(() => _isLoading = true);
-    
     final authRepo = sl<AuthRepository>();
     final result = await authRepo.signInWithGoogle();
-    
+
     setState(() => _isLoading = false);
-    
     if (!mounted) return;
-    
+
     result.fold(
       (failure) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(failure.message, style: const TextStyle(color: Colors.white)),
-            backgroundColor: Colors.red.shade900,
+            content: Text(
+              failure.message,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.black87,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
         );
       },
       (userEntity) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome, ${userEntity.name}!', style: const TextStyle(color: Colors.white)),
-            backgroundColor: Colors.grey.shade900,
+            content: Text(
+              'Welcome back, ${userEntity.name}',
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.black87,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
+        );
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       },
     );
@@ -50,161 +61,154 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: LiquidGlassScope.stack(
-        background: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFEEEEEE), Color(0xFFFFFFFF), Color(0xFFF4F4F4)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        content: Positioned.fill(
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(
+      backgroundColor: const Color(0xFFF5F5F7),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(28.0),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(22.0),
+                  child: Icon(
+                    Icons.album_rounded,
+                    size: 38,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              const Text(
+                'CARBON',
+                style: TextStyle(
+                  fontSize: 34,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                  letterSpacing: 8,
+                  height: 1,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'MUSIC',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                  letterSpacing: 10,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Limitless music. Zero ads.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black45,
+                  letterSpacing: 0.2,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              const SizedBox(height: 64),
+
+              Text(
+                'SIGN IN TO CONTINUE',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black.withValues(alpha: 0.4),
+                  letterSpacing: 2.5,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              if (_isLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 28),
+                  child: CircularProgressIndicator(
+                    color: Colors.black54,
+                    strokeWidth: 2.0,
+                  ),
+                )
+              else ...[
+                _AuthButton(
+                  onTap: _handleGoogleSignIn,
+                  icon: const _GoogleColorIcon(),
+                  label: 'Sign in with Google',
+                ),
+                const SizedBox(height: 12),
+                _AuthButton(
+                  onTap: () {},
+                  icon: Icon(
+                    Icons.mail_outline_rounded,
+                    size: 19,
+                    color: Colors.black.withValues(alpha: 0.8),
+                  ),
+                  label: 'Continue with Email',
+                ),
+              ],
+
+              const SizedBox(height: 24),
+
+              Row(
                 children: [
-                  const SizedBox(height: 60),
-                  
-                  const GlassContainer(
-                    width: 88,
-                    height: 88,
-                    child: Center(
-                      child: Icon(
-                        Icons.album_rounded,
-                        size: 44,
-                        color: Colors.black87,
+                  Expanded(
+                    child: Divider(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      thickness: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: Text(
+                      'or',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black.withValues(alpha: 0.4),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  
-                  const Text(
-                    'CARBON MUSIC',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
-                      letterSpacing: 5,
+                  Expanded(
+                    child: Divider(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      thickness: 1,
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  
-                  const Text(
-                    'Limitless music. Zero ads.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.black54,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  const SizedBox(height: 56),
-                  
-                  GlassContainer(
-                    width: double.infinity,
-                    
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Center(
-                            child: Text(
-                              'SIGN IN TO CONTINUE',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black38,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          
-                          if (_isLoading)
-                            const Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                child: CircularProgressIndicator(
-                                  color: Colors.black54,
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            )
-                          else ...[
-                            
-                            WateryAuthButton(
-                              onTap: _handleGoogleSignIn,
-                              icon: const _GoogleColorIcon(),
-                              label: 'Sign in with Google',
-                            ),
-                            const SizedBox(height: 12),
-                            
-                            WateryAuthButton(
-                              onTap: () {},
-                              icon: const Icon(
-                                Icons.mail_outline_rounded,
-                                size: 20,
-                                color: Colors.black87,
-                              ),
-                              label: 'Continue with Email',
-                            ),
-                          ],
-                          const SizedBox(height: 20),
-                          
-                          const Row(
-                            children: [
-                              Expanded(
-                                child: Divider(color: Colors.black12, thickness: 0.5),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                child: Text(
-                                  'or',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(color: Colors.black12, thickness: 0.5),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          
-                          WateryAuthButton(
-                            onTap: () {},
-                            icon: const Icon(
-                              Icons.person_add_outlined,
-                              size: 20,
-                              color: Colors.black87,
-                            ),
-                            label: 'Create an account',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  
-                  const Text(
-                    'By continuing you agree to our Terms of Service\nand Privacy Policy',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.black38,
-                      height: 1.6,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
                 ],
               ),
-            ),
+
+              const SizedBox(height: 24),
+
+              _AuthButton(
+                onTap: () {},
+                icon: Icon(
+                  Icons.person_add_outlined,
+                  size: 19,
+                  color: Colors.black.withValues(alpha: 0.8),
+                ),
+                label: 'Create an account',
+              ),
+
+              const SizedBox(height: 40),
+
+              Text(
+                'By continuing you agree to our Terms of Service\nand Privacy Policy',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.black.withValues(alpha: 0.35),
+                  height: 1.7,
+                  letterSpacing: 0.1,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -212,44 +216,67 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class WateryAuthButton extends StatelessWidget {
+class _AuthButton extends StatefulWidget {
   final VoidCallback onTap;
   final Widget icon;
   final String label;
 
-  const WateryAuthButton({
-    super.key,
+  const _AuthButton({
     required this.onTap,
     required this.icon,
     required this.label,
   });
 
   @override
+  State<_AuthButton> createState() => _AuthButtonState();
+}
+
+class _AuthButtonState extends State<_AuthButton> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GlassButton.custom(
-      onTap: onTap,
-      width: double.infinity,
-      height: 56,
-      shape: const LiquidRoundedRectangle(borderRadius: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          icon,
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOut,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.7),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                widget.icon,
+                const SizedBox(width: 10),
+                Text(
+                  widget.label,
+                  style: TextStyle(
+                    color: Colors.black.withValues(alpha: 0.85),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.1,
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 }
+
 
 class _GoogleColorIcon extends StatelessWidget {
   const _GoogleColorIcon();

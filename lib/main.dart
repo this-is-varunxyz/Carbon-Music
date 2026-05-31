@@ -1,9 +1,10 @@
 import 'package:carbon_music/features/auth/presentation/login_screen.dart';
+import 'package:carbon_music/features/music/presentation/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,8 +12,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-  await LiquidGlassWidgets.initialize();
-  runApp(LiquidGlassWidgets.wrap(child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +31,18 @@ class MyApp extends StatelessWidget {
           surface: Colors.white,
         ),
       ),
-      home: const LoginScreen(),
+      home:StreamBuilder<User?>(stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
+        if(snapshot.connectionState==ConnectionState.waiting){
+          return const Scaffold(
+              backgroundColor: Color(0xFFF5F5F7),
+              body: Center(child: CircularProgressIndicator(color: Colors.black54)),
+            );
+        }
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          }
+          return const LoginScreen();
+      }),
     );
   }
 }
