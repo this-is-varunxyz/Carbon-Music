@@ -1,4 +1,4 @@
-import 'package:carbon_music/features/music/presentation/home_screen.dart';
+import 'package:carbon_music/features/home/presentation/root_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_music/features/auth/domain/auth_repository.dart';
 import 'package:carbon_music/injection_container.dart';
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => const RootScreen()),
         );
       },
     );

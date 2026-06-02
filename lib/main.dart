@@ -1,5 +1,5 @@
 import 'package:carbon_music/features/auth/presentation/login_screen.dart';
-import 'package:carbon_music/features/music/presentation/home_screen.dart';
+import 'package:carbon_music/features/home/presentation/root_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             );
         }
           if (snapshot.hasData) {
-            return const HomeScreen();
+            return const RootScreen();
           }
           return const LoginScreen();
       }),
